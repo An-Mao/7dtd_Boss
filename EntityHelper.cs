@@ -22,5 +22,20 @@ namespace Boss {
             }
             return entities;
         }
+
+        private static EntityAlive FindNearestEntity(EntityAlive player, float minDistance) {
+            EntityAlive nearestEntity = null;
+
+            foreach (Entity entity in GameManager.Instance.World.Entities.list) {
+                if (entity is EntityAlive alive && !alive.IsDead() && alive is EntityPlayer) { // 关键修改：排除所有 EntityPlayer
+                    float distance = Vector3.Distance(player.position, alive.position);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearestEntity = alive;
+                    }
+                }
+            }
+            return nearestEntity;
+        }
     }
 }

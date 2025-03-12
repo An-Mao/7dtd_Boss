@@ -67,7 +67,7 @@ namespace Boss {
             try {
                 _xmlDocument.Load(_filePath);
                 Console.WriteLine($"XML file reloaded successfully: {_filePath}");
-                EntityAlivePatch.LoadConfig(_filePath);
+                LoadConfigs.LoadBossConfig(_filePath);
             } catch (Exception ex) {
                 Console.WriteLine($"Error loading XML file: {_filePath} - {ex}");
             }
