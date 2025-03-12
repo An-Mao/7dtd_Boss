@@ -19,6 +19,9 @@ namespace Boss.patch {
         public static bool ProcessDamageResponseLocalPrefix(EntityAlive __instance, ref DamageResponse _dmResponse) {
             if (bosses.ContainsKey(__instance.entityId)) {
                 bosses[__instance.entityId].Hurt(ref _dmResponse);
+            } else if (BossEnchant.CheckBoss(__instance)) {
+                bosses.Add(__instance.entityId, new BossEnchant(__instance));
+                bosses[__instance.entityId].Hurt(ref _dmResponse);
             }
             return false;
         }
