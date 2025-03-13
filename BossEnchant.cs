@@ -25,7 +25,7 @@ namespace Boss {
         }
 
         public void Hurt(ref DamageResponse damageResponse) {
-            if (IsBoss() && damageResponse.Source == null) {
+            if (IsBoss() && damageResponse.Source != null) {
                 int pid = damageResponse.Source.getEntityId();
                 if (GameManager.Instance.World.GetEntity(pid) is EntityPlayer player) {
                     //初始化伤害记录
@@ -68,7 +68,7 @@ namespace Boss {
                     _pdr.damage += scaleDamage;
                     //记录总伤害
                     this.health += scaleDamage;
-
+                    Log.Out($"health: {this.health}");
                     //发送血量信息
                     if (nowTime - msgTime > 10) {
                         msgTime = nowTime;
@@ -81,7 +81,9 @@ namespace Boss {
                     damageResponse.Strength = scaleDamage;
                     //处理死亡
                     if (this.health >= this.boss.GetMaxHealth()) {
-                        ItemHelper.GiveItemToPlayers(EntityHelper.FindNearbyEntities(this.boss, config.KillRange), config.Reward);
+                        if (isExBoss) {
+                            ItemHelper.GiveItemToPlayers(EntityHelper.FindNearbyEntities(this.boss, config.KillRange), config.Reward);
+                        }
                         this.boss.Health = 1;
                         damageResponse.Strength = 2;
                         return;
